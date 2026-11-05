@@ -47,9 +47,11 @@ This integration uses about **55 calls per day (~1,650 per month)**. It backs of
 
 ### HACS (recommended)
 
-1. HACS → ⋮ → **Custom repositories** → add `https://github.com/rvdwal1991/solaredge-v2-ha`,
-   category **Integration**.
-2. Search for **SolarEdge Cloud (API v2)** and download it.
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=rvdwal1991&repository=solaredge-v2-ha&category=integration)
+
+1. Click the button above. If that doesn't work: HACS → ⋮ → **Custom repositories** →
+   add `https://github.com/rvdwal1991/solaredge-v2-ha`, category **Integration**.
+2. Click **Download** for **SolarEdge Cloud (API v2)**.
 3. Restart Home Assistant.
 
 ### Manual
@@ -76,7 +78,10 @@ Home Assistant configuration and restart.
 
 ### 2. Add the integration
 
-1. **Settings → Devices & services → Add integration → SolarEdge Cloud (API v2)**.
+[![Open your Home Assistant instance and start setting up SolarEdge Cloud.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=solaredge_cloud)
+
+1. Click the button above, or go to **Settings → Devices & services → Add integration →
+   SolarEdge Cloud (API v2)**.
 2. Enter your **Site ID** (in the monitoring portal or app under site details), the
    Client ID and the Client secret.
 3. A SolarEdge window opens. Sign in with the **site owner's** account and grant access.
