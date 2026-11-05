@@ -33,6 +33,7 @@ from .const import (
     CONF_CLIENT_SECRET,
     CONF_SITE_ID,
     CONF_TOKEN,
+    DEVELOPER_PORTAL_URL,
     DOMAIN,
     LOGGER,
 )
@@ -129,7 +130,10 @@ class SolarEdgeCloudConfigFlow(ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_CLIENT_SECRET): str,
                 }
             ),
-            description_placeholders={"redirect_uri": _redirect_uri(self.hass)},
+            description_placeholders={
+                "redirect_uri": _redirect_uri(self.hass),
+                "developer_portal_url": DEVELOPER_PORTAL_URL,
+            },
             errors=errors,
         )
 

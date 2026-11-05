@@ -11,6 +11,7 @@ OAUTH2_AUTHORIZE = "https://connect.solaredge.com/authorize"
 OAUTH2_TOKEN = f"{API_BASE_URL}/oauth2/token"
 OAUTH2_SCOPE = "SITE_DATA DEVICE_DATA"
 CALLBACK_PATH = "/api/solaredge_cloud/callback"
+DEVELOPER_PORTAL_URL = "https://developer.solaredge.com/"
 
 CONF_SITE_ID = "site_id"
 CONF_CLIENT_ID = "client_id"

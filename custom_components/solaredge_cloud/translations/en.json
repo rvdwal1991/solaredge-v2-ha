@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "SolarEdge Cloud (API v2)",
-        "description": "Create a **Site Access** application on [developer.solaredge.com](https://developer.solaredge.com/) with the scopes SITE_DATA and DEVICE_DATA, and register this exact redirect URL:\n\n`{redirect_uri}`\n\nHome Assistant must be reachable on that address over https (for example through Home Assistant Cloud or a reverse proxy). After submitting, SolarEdge opens a window: sign in with the site owner's account and grant access.",
+        "description": "Create a **Site Access** application on [developer.solaredge.com]({developer_portal_url}) with the scopes SITE_DATA and DEVICE_DATA, and register this exact redirect URL:\n\n`{redirect_uri}`\n\nHome Assistant must be reachable on that address over https (for example through Home Assistant Cloud or a reverse proxy). After submitting, SolarEdge opens a window: sign in with the site owner's account and grant access.",
         "data": {
           "site_id": "Site ID",
           "client_id": "Client ID",
