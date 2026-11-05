@@ -1,6 +1,7 @@
 {
   "domain": "solaredge_cloud",
   "name": "SolarEdge Cloud (API v2)",
+  "categories": ["energy.solar_batteries"],
   "codeowners": ["@rvdwal1991"],
   "config_flow": true,
   "dependencies": ["http"],

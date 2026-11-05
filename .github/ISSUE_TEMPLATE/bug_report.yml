@@ -1,0 +1,59 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please check the **Troubleshooting** section of the README first.
+        **Never post your Client secret, tokens or access codes here.**
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where does it go wrong?
+      options:
+        - Setting up / authorizing with SolarEdge
+        - Sensor values are wrong or missing
+        - Integration stops working after a while
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: integration_version
+    attributes:
+      label: Integration version
+      description: Shown in HACS, e.g. v1.2.0
+    validations:
+      required: true
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant version
+      description: Settings → About, e.g. 2026.10.4
+    validations:
+      required: true
+  - type: textarea
+    id: equipment
+    attributes:
+      label: SolarEdge equipment
+      description: Inverter model, and whether you have a SolarEdge meter, battery or EV charger.
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: |
+        Settings → Devices & services → SolarEdge Cloud → ⋮ → **Download diagnostics**, then drag the file here.
+        Secrets, location and serial numbers are already removed from it.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log lines
+      description: Relevant lines from Settings → System → Logs (search for `solaredge_cloud`).
+      render: text
