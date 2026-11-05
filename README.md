@@ -8,6 +8,10 @@ Home Assistant `solaredge` integration fails with `410 Gone` / *API Version Depr
 and old API keys no longer work. This custom integration uses the new
 **SolarEdge Monitoring API V2** with OAuth2, so you get your production data back.
 
+<p align="center">
+  <img src="docs/images/device.png" alt="Device page with all SolarEdge Cloud sensors" width="720">
+</p>
+
 ## Features
 
 | Entity | Description | Refreshed |
@@ -23,6 +27,12 @@ and old API keys no longer work. This custom integration uses the new
 
 The device page also shows the inverter model and firmware version.
 All energy sensors use `total_increasing`, so they work in the Energy dashboard.
+
+### Screenshots
+
+| Integration page | Dashboard tiles |
+|---|---|
+| ![Integration page with the SolarEdge logo](docs/images/integration.png) | ![Tiles with energy today, this month and this year](docs/images/dashboard.png) |
 
 ### API credits
 
@@ -126,7 +136,11 @@ or in the mySolarEdge app (a number such as `1234567`).
 1. Click the button above, or go to **Settings → Devices & services → Add integration →
    SolarEdge Cloud (API v2)**.
 2. Enter your **Site ID** (in the monitoring portal or app under site details), the
-   Client ID and the Client secret.
+   Client ID and the Client secret. The form also shows the exact redirect URL to
+   register at SolarEdge:
+
+   <img src="docs/images/setup.png" alt="Setup form with the redirect URL, Site ID, Client ID and Client secret" width="480">
+
 3. A SolarEdge window opens. Sign in with your **mySolarEdge (site owner) account**. If
    you own more than one site, pick the site, then click **Approve** on the consent
    screen.
