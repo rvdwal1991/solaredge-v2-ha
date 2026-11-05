@@ -61,20 +61,63 @@ Home Assistant configuration and restart.
 
 ## Setup
 
-### 1. Create a SolarEdge application
+### 1. Create a SolarEdge developer account and application
 
-1. Sign in at [developer.solaredge.com](https://developer.solaredge.com/) and create an
-   application.
-2. Access type: **Site Access**. Scopes: tick both **SITE_DATA** and **DEVICE_DATA**.
-3. Under **Allowed Redirect URL(s)** add:
+This is a one-time step of about 5 minutes. The free tier is enough. It gives
+2,000 API calls per month and 1 application.
 
-   ```
-   https://<your-home-assistant-address>/api/solaredge_cloud/callback
-   ```
+#### 1a. Create the developer account
 
-   Use your external URL with no slash at the end. The setup form in Home Assistant
-   shows the exact URL to copy. Leave *Origin URL* and *Returned URL* empty.
-4. Submit and save the **Client ID** and **Client secret**. The secret is only shown once.
+1. Go to [developer.solaredge.com](https://developer.solaredge.com/) and **sign in with the
+   same email and password you use for the mySolarEdge app** or
+   monitoring.solaredge.com. If you don't have a SolarEdge login yet, choose **Sign up**.
+2. You are asked to fill in a developer profile once:
+
+   | Field | What to enter |
+   |---|---|
+   | Company Name | Your own name or a project name, e.g. `Home Assistant`. Use English letters and numbers only, no accents. It's just a label. |
+   | Industry type | `Other / Hobbyist` |
+   | Expected monthly API usage | `Low – personal project` |
+
+3. Accept the developer agreement. Your normal SolarEdge account keeps working exactly
+   as before. The developer profile is added on top of it.
+
+#### 1b. Create the application
+
+In the developer console, click **Create Application** and go through the three steps:
+
+**Step 1 – Details**
+
+| Field | What to enter |
+|---|---|
+| Name | e.g. `Home Assistant`. It is shown on the consent screen later. |
+| Description | e.g. `Personal solar data integration` |
+| Service | `Monitoring API` |
+
+**Step 2 – Access Type**
+
+| Field | What to enter |
+|---|---|
+| Access type | **Site Access** (Fleet Access is for installers) |
+| Scopes | Tick both **SITE_DATA** and **DEVICE_DATA** |
+| Application Logo | Optional, you can skip it |
+| Allowed Origin URL(s) | Optional. Leave empty, or enter your Home Assistant external URL, e.g. `https://ha.example.com` |
+| Allowed Redirect URL(s) | **Label:** `Home Assistant`<br>**URL:** `https://<your-home-assistant-address>/api/solaredge_cloud/callback`<br>Keep this row selected as **Default**. |
+| Allowed Returned URL(s) | Leave empty |
+
+The redirect URL must match **exactly**: your external https address, with no port
+(unless your external URL has one) and no slash at the end. For example:
+`https://ha.example.com/api/solaredge_cloud/callback`, or with Home Assistant Cloud
+`https://abcdef123456.ui.nabu.casa/api/solaredge_cloud/callback`. If you're not sure,
+start step 2 below first: the setup form shows the exact URL to copy.
+
+**Step 3 – Finished**
+
+Click **Submit**. You now get a **Client ID** and a **Client secret**. Copy both
+somewhere safe right away, because **the secret is only shown once**.
+
+You'll also need your **Site ID**. It is in the monitoring portal under *Site details*
+or in the mySolarEdge app (a number such as `1234567`).
 
 ### 2. Add the integration
 
@@ -84,11 +127,15 @@ Home Assistant configuration and restart.
    SolarEdge Cloud (API v2)**.
 2. Enter your **Site ID** (in the monitoring portal or app under site details), the
    Client ID and the Client secret.
-3. A SolarEdge window opens. Sign in with the **site owner's** account and grant access.
+3. A SolarEdge window opens. Sign in with your **mySolarEdge (site owner) account**. If
+   you own more than one site, pick the site, then click **Approve** on the consent
+   screen.
 4. The window says *Done* and closes. The integration is set up.
 
-If SolarEdge ever revokes the access, Home Assistant asks you to re-authenticate and
-you go through step 3 again.
+The consent is valid for 24 months. The integration renews its tokens automatically,
+but SolarEdge expires them after **14 days without use**. If Home Assistant was off for
+that long, or SolarEdge revokes the access, Home Assistant asks you to re-authenticate
+and you go through step 3 again.
 
 ## Migrating from the built-in SolarEdge integration
 
@@ -107,6 +154,10 @@ The long-term statistics of the old sensors stay in your history.
   SolarEdge must match the one shown in the setup form exactly.
 - **"We couldn't verify your account"**: sign in with the account that owns the site,
   not just the developer account.
+- **"Company Name" is rejected**: use only English letters, numbers and spaces.
+- **Lost the Client secret**: create a new secret for your application in the developer
+  console, or delete the application and create a new one (the free tier allows one
+  application). Then remove the integration in Home Assistant and add it again.
 - **Diagnostics**: on the integration page, *Download diagnostics* shows the raw API
   responses and the rate-limit headers. Secrets, location and serial numbers are left out.
 
