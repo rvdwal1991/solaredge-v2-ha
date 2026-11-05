@@ -1,0 +1,12 @@
+SolarEdge Cloud (API v2) for Home Assistant
+Copyright 2026 rvdwal1991
+
+The response-parsing helpers in custom_components/solaredge_cloud/coordinator.py
+are adapted from the SolarEdge V2 migration proposed for Home Assistant Core
+(https://github.com/home-assistant/core/pull/187939), licensed under the
+Apache License, Version 2.0.
+
+The SolarEdge name and logo in custom_components/solaredge_cloud/brand/ are
+trademarks of SolarEdge Technologies Ltd. and are taken from the Home Assistant
+brands repository (https://github.com/home-assistant/brands). This project is
+not affiliated with or endorsed by SolarEdge.

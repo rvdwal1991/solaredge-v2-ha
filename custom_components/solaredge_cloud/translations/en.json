@@ -1,0 +1,71 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "SolarEdge Cloud (API v2)",
+        "description": "Create a **Site Access** application on [developer.solaredge.com](https://developer.solaredge.com/) with the scopes SITE_DATA and DEVICE_DATA, and register this exact redirect URL:\n\n`{redirect_uri}`\n\nHome Assistant must be reachable on that address over https (for example through Home Assistant Cloud or a reverse proxy). After submitting, SolarEdge opens a window: sign in with the site owner's account and grant access.",
+        "data": {
+          "site_id": "Site ID",
+          "client_id": "Client ID",
+          "client_secret": "Client secret"
+        },
+        "data_description": {
+          "site_id": "Shown in the SolarEdge monitoring portal or app (site details).",
+          "client_id": "From your Site Access application.",
+          "client_secret": "From your Site Access application. Only shown once when the app is created."
+        }
+      }
+    },
+    "progress": {
+      "auth": "Grant access in the SolarEdge window that just opened."
+    },
+    "abort": {
+      "already_configured": "This site is already configured.",
+      "auth_failed": "Authorization failed: {error}",
+      "reauth_successful": "Re-authentication successful.",
+      "already_in_progress": "Setup for this site is already in progress."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "energy_today": {
+        "name": "Energy today"
+      },
+      "energy_this_month": {
+        "name": "Energy this month"
+      },
+      "energy_this_year": {
+        "name": "Energy this year"
+      },
+      "lifetime_energy": {
+        "name": "Lifetime energy"
+      },
+      "site_status": {
+        "name": "Site status"
+      },
+      "last_update": {
+        "name": "Last SolarEdge update"
+      },
+      "specific_yield_today": {
+        "name": "Specific yield today"
+      },
+      "specific_yield_this_month": {
+        "name": "Specific yield this month"
+      },
+      "open_alerts": {
+        "name": "Open alerts"
+      },
+      "co2_avoided": {
+        "name": "CO₂ avoided"
+      },
+      "optimizer_count": {
+        "name": "Optimizers"
+      }
+    },
+    "binary_sensor": {
+      "problem": {
+        "name": "Problem"
+      }
+    }
+  }
+}

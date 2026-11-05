@@ -1,0 +1,71 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "SolarEdge Cloud (API v2)",
+        "description": "Maak op [developer.solaredge.com](https://developer.solaredge.com/) een **Site Access**-applicatie aan met de scopes SITE_DATA en DEVICE_DATA, en registreer precies deze redirect-URL:\n\n`{redirect_uri}`\n\nHome Assistant moet op dat adres via https bereikbaar zijn (bijvoorbeeld via Home Assistant Cloud of een reverse proxy). Na het versturen opent SolarEdge een venster: log in met het account van de site-eigenaar en geef toestemming.",
+        "data": {
+          "site_id": "Site-ID",
+          "client_id": "Client ID",
+          "client_secret": "Client secret"
+        },
+        "data_description": {
+          "site_id": "Te vinden in het SolarEdge-monitoringportaal of de app (sitegegevens).",
+          "client_id": "Uit je Site Access-applicatie.",
+          "client_secret": "Uit je Site Access-applicatie. Wordt maar één keer getoond bij het aanmaken."
+        }
+      }
+    },
+    "progress": {
+      "auth": "Geef toestemming in het SolarEdge-venster dat net is geopend."
+    },
+    "abort": {
+      "already_configured": "Deze site is al gekoppeld.",
+      "auth_failed": "Koppelen mislukt: {error}",
+      "reauth_successful": "Opnieuw gekoppeld.",
+      "already_in_progress": "De koppeling voor deze site loopt al."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "energy_today": {
+        "name": "Opbrengst vandaag"
+      },
+      "energy_this_month": {
+        "name": "Opbrengst deze maand"
+      },
+      "energy_this_year": {
+        "name": "Opbrengst dit jaar"
+      },
+      "lifetime_energy": {
+        "name": "Totale opbrengst"
+      },
+      "site_status": {
+        "name": "Sitestatus"
+      },
+      "last_update": {
+        "name": "Laatste update SolarEdge"
+      },
+      "specific_yield_today": {
+        "name": "Specifieke opbrengst vandaag"
+      },
+      "specific_yield_this_month": {
+        "name": "Specifieke opbrengst deze maand"
+      },
+      "open_alerts": {
+        "name": "Open meldingen"
+      },
+      "co2_avoided": {
+        "name": "Vermeden CO₂"
+      },
+      "optimizer_count": {
+        "name": "Optimizers"
+      }
+    },
+    "binary_sensor": {
+      "problem": {
+        "name": "Probleem"
+      }
+    }
+  }
+}
