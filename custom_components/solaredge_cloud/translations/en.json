@@ -60,6 +60,18 @@
       },
       "optimizer_count": {
         "name": "Optimizers"
+      },
+      "grid_export_today": {
+        "name": "Grid export today"
+      },
+      "grid_import_today": {
+        "name": "Grid import today"
+      },
+      "consumption_today": {
+        "name": "Consumption today"
+      },
+      "self_consumption_today": {
+        "name": "Self consumption today"
       }
     },
     "binary_sensor": {
