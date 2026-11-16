@@ -167,6 +167,10 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         site = _mapping(details.get("site")) or details
         day = _mapping(raw.get("day"))
         production = _mapping(day.get("production"))
+        consumption = _mapping(day.get("consumption"))
+        daily_unit = _find_string(day, "units", "unit")
+        production_unit = _find_string(production, "units", "unit") or daily_unit
+        consumption_unit = _find_string(consumption, "units", "unit") or daily_unit
         lifetime = _mapping(raw.get("lifetime"))
         benefits = _mapping(raw.get("benefits"))
         alerts_raw = raw.get("alerts")
@@ -184,12 +188,24 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
         energy_today = _kwh(
             _find_number(production, "total"),
-            _find_string(production, "units", "unit") or _find_string(day, "units", "unit"),
+            production_unit,
         )
         energy_month = _energy_total_kwh(_mapping(raw.get("month")))
         ev_miles = _find_number(benefits, "evMiles")
         return {
             "energy_today": energy_today,
+            "grid_export_today": _kwh(
+                _find_number(production, "toGrid"), production_unit
+            ),
+            "grid_import_today": _kwh(
+                _find_number(consumption, "fromGrid"), consumption_unit
+            ),
+            "consumption_today": _kwh(
+                _find_number(consumption, "total"), consumption_unit
+            ),
+            "self_consumption_today": _kwh(
+                _find_number(production, "toSelfConsumption"), production_unit
+            ),
             "energy_this_month": energy_month,
             "energy_this_year": _energy_total_kwh(_mapping(raw.get("year"))),
             "lifetime_energy": _kwh(
