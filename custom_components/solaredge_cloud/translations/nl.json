@@ -31,6 +31,9 @@
       "energy_today": {
         "name": "Opbrengst vandaag"
       },
+      "consumption_today": {
+        "name": "Vandaag verbruikte energie"
+      },      
       "energy_this_month": {
         "name": "Opbrengst deze maand"
       },
@@ -39,6 +42,24 @@
       },
       "lifetime_energy": {
         "name": "Totale opbrengst"
+      },
+      "to_self_consumption_today": {
+         "name": "Naar eigen consumptie vandaag"
+      },
+      "to_storage_today": {
+        "name": "Vandaag naar de opslag"
+      },
+      "to_grid_today": {
+        "name": "Naar het elektriciteitsnet vandaag"
+      },
+      "from_pv_today": {
+        "name": "Uit PV today"
+      },
+      "from_storage_today": {
+        "name": "Vandaag uit de opslag"
+      },
+      "from_grid_today": {
+        "name": "Vanaf het elektriciteitsnet vandaag"
       },
       "site_status": {
         "name": "Sitestatus"

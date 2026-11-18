@@ -29,8 +29,11 @@
   "entity": {
     "sensor": {
       "energy_today": {
-        "name": "Energy today"
+        "name": "Energy produced today"
       },
+      "consumption_today": {
+        "name": "Energy consumed today"
+      },      
       "energy_this_month": {
         "name": "Energy this month"
       },
@@ -39,6 +42,24 @@
       },
       "lifetime_energy": {
         "name": "Lifetime energy"
+      },
+      "to_self_consumption_today": {
+         "name": "To self consumption today"
+      },
+      "to_storage_today": {
+        "name": "To storage today"
+      },
+      "to_grid_today": {
+        "name": "To grid today"
+      },
+      "from_pv_today": {
+        "name": "From PV today"
+      },
+      "from_storage_today": {
+        "name": "From storage today"
+      },
+      "from_grid_today": {
+        "name": "From grid today"
       },
       "site_status": {
         "name": "Site status"

@@ -167,6 +167,7 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         site = _mapping(details.get("site")) or details
         day = _mapping(raw.get("day"))
         production = _mapping(day.get("production"))
+        consumption = _mapping(day.get("consumption"))
         lifetime = _mapping(raw.get("lifetime"))
         benefits = _mapping(raw.get("benefits"))
         alerts_raw = raw.get("alerts")
@@ -182,14 +183,30 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         optimizers = [d for d in devices if d.get("type") == "OPTIMIZER"]
         peak_kwp = site.get("peakPower")
 
-        energy_today = _kwh(
-            _find_number(production, "total"),
-            _find_string(production, "units", "unit") or _find_string(day, "units", "unit"),
-        )
+        prod_unit = _find_string(production, "units", "unit") or _find_string(day, "units", "unit")
+        cons_unit = _find_string(consumption, "units", "unit") or _find_string(day, "units", "unit")
+
+        energy_today = _kwh(_find_number(production, "total"), prod_unit)
+        consumption_today = _kwh(_find_number(consumption, "total"), cons_unit)
+        
+        to_self_consumption_today = _kwh(_find_number(production, "toSelfConsumption"), prod_unit)
+        to_storage_today = _kwh(_find_number(production, "toStorage"), prod_unit)
+        to_grid_today = _kwh(_find_number(production, "toGrid"), prod_unit)
+        from_pv_today = _kwh(_find_number(consumption, "fromPv"), cons_unit)
+        from_storage_today = _kwh(_find_number(consumption, "fromStorage"), cons_unit)
+        from_grid_today = _kwh(_find_number(consumption, "fromGrid"), cons_unit)
+
         energy_month = _energy_total_kwh(_mapping(raw.get("month")))
         ev_miles = _find_number(benefits, "evMiles")
         return {
             "energy_today": energy_today,
+            "consumption_today": consumption_today,
+            "to_self_consumption_today": to_self_consumption_today,
+            "to_storage_today": to_storage_today,
+            "to_grid_today": to_grid_today,
+            "from_pv_today": from_pv_today,
+            "from_storage_today": from_storage_today,
+            "from_grid_today": from_grid_today,
             "energy_this_month": energy_month,
             "energy_this_year": _energy_total_kwh(_mapping(raw.get("year"))),
             "lifetime_energy": _kwh(
