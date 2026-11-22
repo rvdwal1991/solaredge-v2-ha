@@ -29,6 +29,7 @@ from .const import (
     CONF_CLIENT_SECRET,
     CONF_SITE_ID,
     CONF_TOKEN,
+    DAY_FINAL_READ,
     DAY_INTERVAL_SUN_DOWN,
     DAY_INTERVAL_SUN_UP,
     DETAILS_INTERVAL,
@@ -98,7 +99,14 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     def _due(self, key: str, interval: timedelta, now: datetime) -> bool:
         last = self._fetched_at.get(key)
-        return last is None or now - last >= interval
+        if last is None or now - last >= interval:
+            return True
+        if key != "day":
+            return False
+        final = now.replace(
+            hour=DAY_FINAL_READ.hour, minute=DAY_FINAL_READ.minute, second=0, microsecond=0
+        )
+        return last < final <= now
 
     def _sun_up(self) -> bool:
         sun = self.hass.states.get("sun.sun")
@@ -111,10 +119,12 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         year_start = month_start.replace(month=1)
         sid = self.site_id
 
-        # New day/month/year: drop the cached value so the totals reset.
+        # New day/month/year: drop the cached response as well, so the previous
+        # period's totals never show as the new one's if the first request fails.
         for key, start in (("day", day_start), ("month", month_start), ("year", year_start)):
             if (last := self._fetched_at.get(key)) and last < start:
                 self._fetched_at.pop(key)
+                self.raw.pop(key, None)
 
         if self._backoff_until and now < self._backoff_until:
             return self._parse()

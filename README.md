@@ -16,7 +16,7 @@ and old API keys no longer work. This custom integration uses the new
 
 | Entity | Description | Refreshed |
 |---|---|---|
-| Energy today | Production today (kWh) | every 30 min while the sun is up, every 3 h at night |
+| Energy today | Production today (kWh) | every 30 min while the sun is up, every 3 h at night, and once at 23:50 |
 | Grid import / export today | From and to the grid today (kWh) ¹ | with energy today, no extra calls |
 | Consumption / solar self consumption today | Home consumption and solar used at home today (kWh) ¹ | with energy today, no extra calls |
 | Solar to battery / battery to home today | Battery charge from solar and discharge to the home today (kWh) ² | with energy today, no extra calls |
@@ -43,7 +43,7 @@ All energy sensors use `total_increasing`, so they work in the Energy dashboard.
 ### API credits
 
 The free SolarEdge tier gives about **2,000 API calls per month** and 10 per minute.
-This integration uses about **55 calls per day (~1,650 per month)**. It backs off for
+This integration uses about **56 calls per day (~1,700 per month)**. It backs off for
 30 minutes after an error and keeps showing the last known values.
 
 > Tip: for live power (watts, every few seconds) use the local

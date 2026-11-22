@@ -1,6 +1,6 @@
 """Constants for SolarEdge Cloud (Monitoring API V2)."""
 
-from datetime import timedelta
+from datetime import time, timedelta
 import logging
 
 DOMAIN = "solaredge_cloud"
@@ -20,10 +20,13 @@ CONF_TOKEN = "token"
 
 # The free tier gives ~2000 credits per month (≈ 65 per day) and 10 per minute;
 # every call costs one credit. The coordinator ticks every 5 minutes but only
-# calls an endpoint when its interval has passed: ~55 calls per day in total.
+# calls an endpoint when its interval has passed: ~56 calls per day in total.
 TICK_INTERVAL = timedelta(minutes=5)
 DAY_INTERVAL_SUN_UP = timedelta(minutes=30)
 DAY_INTERVAL_SUN_DOWN = timedelta(hours=3)
+# One extra daily read just before midnight: consumption and grid import keep
+# counting at night, and the night interval would miss the last hours of the day.
+DAY_FINAL_READ = time(23, 50)
 MONTH_INTERVAL = timedelta(hours=3)
 YEAR_INTERVAL = timedelta(hours=6)
 LIFETIME_INTERVAL = timedelta(hours=6)
