@@ -29,11 +29,8 @@
   "entity": {
     "sensor": {
       "energy_today": {
-        "name": "Energy produced today"
+        "name": "Energy today"
       },
-      "consumption_today": {
-        "name": "Energy consumed today"
-      },      
       "energy_this_month": {
         "name": "Energy this month"
       },
@@ -42,24 +39,6 @@
       },
       "lifetime_energy": {
         "name": "Lifetime energy"
-      },
-      "to_self_consumption_today": {
-         "name": "To self consumption today"
-      },
-      "to_storage_today": {
-        "name": "To storage today"
-      },
-      "to_grid_today": {
-        "name": "To grid today"
-      },
-      "from_pv_today": {
-        "name": "From PV today"
-      },
-      "from_storage_today": {
-        "name": "From storage today"
-      },
-      "from_grid_today": {
-        "name": "From grid today"
       },
       "site_status": {
         "name": "Site status"
@@ -81,6 +60,24 @@
       },
       "optimizer_count": {
         "name": "Optimizers"
+      },
+      "grid_export_today": {
+        "name": "Grid export today"
+      },
+      "grid_import_today": {
+        "name": "Grid import today"
+      },
+      "consumption_today": {
+        "name": "Consumption today"
+      },
+      "self_consumption_today": {
+        "name": "Solar self consumption today"
+      },
+      "to_storage_today": {
+        "name": "Solar to battery today"
+      },
+      "from_storage_today": {
+        "name": "Battery to home today"
       }
     },
     "binary_sensor": {

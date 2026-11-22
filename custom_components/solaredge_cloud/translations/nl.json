@@ -31,9 +31,6 @@
       "energy_today": {
         "name": "Opbrengst vandaag"
       },
-      "consumption_today": {
-        "name": "Vandaag verbruikte energie"
-      },      
       "energy_this_month": {
         "name": "Opbrengst deze maand"
       },
@@ -42,24 +39,6 @@
       },
       "lifetime_energy": {
         "name": "Totale opbrengst"
-      },
-      "to_self_consumption_today": {
-         "name": "Naar eigen consumptie vandaag"
-      },
-      "to_storage_today": {
-        "name": "Vandaag naar de opslag"
-      },
-      "to_grid_today": {
-        "name": "Naar het elektriciteitsnet vandaag"
-      },
-      "from_pv_today": {
-        "name": "Uit PV today"
-      },
-      "from_storage_today": {
-        "name": "Vandaag uit de opslag"
-      },
-      "from_grid_today": {
-        "name": "Vanaf het elektriciteitsnet vandaag"
       },
       "site_status": {
         "name": "Sitestatus"
@@ -81,6 +60,24 @@
       },
       "optimizer_count": {
         "name": "Optimizers"
+      },
+      "grid_export_today": {
+        "name": "Teruglevering vandaag"
+      },
+      "grid_import_today": {
+        "name": "Netafname vandaag"
+      },
+      "consumption_today": {
+        "name": "Verbruik vandaag"
+      },
+      "self_consumption_today": {
+        "name": "Eigen verbruik zon vandaag"
+      },
+      "to_storage_today": {
+        "name": "Zon naar batterij vandaag"
+      },
+      "from_storage_today": {
+        "name": "Batterij naar huis vandaag"
       }
     },
     "binary_sensor": {
