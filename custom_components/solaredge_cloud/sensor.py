@@ -43,6 +43,10 @@ def _energy(key: str) -> SolarEdgeSensorDescription:
 
 SENSORS = (
     _energy("energy_today"),
+    _energy("grid_export_today"),
+    _energy("grid_import_today"),
+    _energy("consumption_today"),
+    _energy("self_consumption_today"),
     _energy("energy_this_month"),
     _energy("energy_this_year"),
     _energy("lifetime_energy"),
