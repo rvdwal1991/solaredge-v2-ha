@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from homeassistant.components.sensor import (
+    DOMAIN as SENSOR_DOMAIN,
     SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
@@ -14,6 +15,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import EntityCategory, UnitOfEnergy, UnitOfMass
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -27,9 +29,11 @@ from .coordinator import SolarEdgeCloudCoordinator
 class SolarEdgeSensorDescription(SensorEntityDescription):
     value_fn: Callable[[dict[str, Any]], Any]
     attr_fn: Callable[[dict[str, Any]], dict[str, Any]] | None = None
+    # Only created when the site reports a value (needs a SolarEdge meter or battery).
+    optional: bool = False
 
 
-def _energy(key: str) -> SolarEdgeSensorDescription:
+def _energy(key: str, optional: bool = False) -> SolarEdgeSensorDescription:
     return SolarEdgeSensorDescription(
         key=key,
         translation_key=key,
@@ -38,15 +42,18 @@ def _energy(key: str) -> SolarEdgeSensorDescription:
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         suggested_display_precision=2,
         value_fn=lambda d, key=key: d.get(key),
+        optional=optional,
     )
 
 
 SENSORS = (
     _energy("energy_today"),
-    _energy("grid_export_today"),
-    _energy("grid_import_today"),
-    _energy("consumption_today"),
-    _energy("self_consumption_today"),
+    _energy("grid_export_today", optional=True),
+    _energy("grid_import_today", optional=True),
+    _energy("consumption_today", optional=True),
+    _energy("self_consumption_today", optional=True),
+    _energy("to_storage_today", optional=True),
+    _energy("from_storage_today", optional=True),
     _energy("energy_this_month"),
     _energy("energy_this_year"),
     _energy("lifetime_energy"),
@@ -125,7 +132,16 @@ async def async_setup_entry(
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     coordinator = entry.runtime_data
-    async_add_entities(SolarEdgeCloudSensor(coordinator, d) for d in SENSORS)
+    registry = er.async_get(hass)
+
+    def wanted(description: SolarEdgeSensorDescription) -> bool:
+        if not description.optional or description.value_fn(coordinator.data) is not None:
+            return True
+        # Keep entities that exist already, so a temporary gap doesn't orphan them.
+        unique_id = f"{coordinator.site_id}_{description.key}"
+        return registry.async_get_entity_id(SENSOR_DOMAIN, DOMAIN, unique_id) is not None
+
+    async_add_entities(SolarEdgeCloudSensor(coordinator, d) for d in SENSORS if wanted(d))
 
 
 class SolarEdgeCloudSensor(CoordinatorEntity[SolarEdgeCloudCoordinator], SensorEntity):

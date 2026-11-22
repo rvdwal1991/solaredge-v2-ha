@@ -71,7 +71,13 @@
         "name": "Consumption today"
       },
       "self_consumption_today": {
-        "name": "Self consumption today"
+        "name": "Solar self consumption today"
+      },
+      "to_storage_today": {
+        "name": "Solar to battery today"
+      },
+      "from_storage_today": {
+        "name": "Battery to home today"
       }
     },
     "binary_sensor": {

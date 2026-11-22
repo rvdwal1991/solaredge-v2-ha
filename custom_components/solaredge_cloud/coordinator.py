@@ -186,10 +186,7 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         optimizers = [d for d in devices if d.get("type") == "OPTIMIZER"]
         peak_kwp = site.get("peakPower")
 
-        energy_today = _kwh(
-            _find_number(production, "total"),
-            production_unit,
-        )
+        energy_today = _kwh(_find_number(production, "total"), production_unit)
         energy_month = _energy_total_kwh(_mapping(raw.get("month")))
         ev_miles = _find_number(benefits, "evMiles")
         return {
@@ -205,6 +202,12 @@ class SolarEdgeCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             ),
             "self_consumption_today": _kwh(
                 _find_number(production, "toSelfConsumption"), production_unit
+            ),
+            "to_storage_today": _kwh(
+                _find_number(production, "toStorage"), production_unit
+            ),
+            "from_storage_today": _kwh(
+                _find_number(consumption, "fromStorage"), consumption_unit
             ),
             "energy_this_month": energy_month,
             "energy_this_year": _energy_total_kwh(_mapping(raw.get("year"))),

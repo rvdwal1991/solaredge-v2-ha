@@ -17,6 +17,9 @@ and old API keys no longer work. This custom integration uses the new
 | Entity | Description | Refreshed |
 |---|---|---|
 | Energy today | Production today (kWh) | every 30 min while the sun is up, every 3 h at night |
+| Grid import / export today | From and to the grid today (kWh) ¹ | with energy today, no extra calls |
+| Consumption / solar self consumption today | Home consumption and solar used at home today (kWh) ¹ | with energy today, no extra calls |
+| Solar to battery / battery to home today | Battery charge from solar and discharge to the home today (kWh) ² | with energy today, no extra calls |
 | Energy this month / this year | Production totals (kWh) | every 3 h / 6 h |
 | Lifetime energy | Total production (kWh) | every 6 h |
 | Specific yield today / this month | kWh per installed kWp | calculated, no extra calls |
@@ -26,6 +29,9 @@ and old API keys no longer work. This custom integration uses the new
 | Site status, last SolarEdge update | Diagnostic | daily / with every update |
 
 The device page also shows the inverter model and firmware version.
+¹ Only on sites with a SolarEdge meter. ² Only on sites with a SolarEdge battery.
+Sensors without data are not created, so a site without a meter or battery gets no empty entities.
+
 All energy sensors use `total_increasing`, so they work in the Energy dashboard.
 
 ### Screenshots
@@ -179,9 +185,8 @@ The long-term statistics of the old sensors stay in your history.
 
 - Per-panel / per-optimizer production. This is only in SolarEdge's paid Advanced
   Monitoring API.
-- Grid import/export, consumption and battery data are available from the API but not
-  exposed yet (pull requests welcome). The author's site has no SolarEdge meter or
-  battery to test with.
+- Battery state of charge and live power. These need extra API calls, which don't fit in
+  the free tier's credits.
 
 ## License
 

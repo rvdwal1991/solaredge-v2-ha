@@ -60,6 +60,24 @@
       },
       "optimizer_count": {
         "name": "Optimizers"
+      },
+      "grid_export_today": {
+        "name": "Teruglevering vandaag"
+      },
+      "grid_import_today": {
+        "name": "Netafname vandaag"
+      },
+      "consumption_today": {
+        "name": "Verbruik vandaag"
+      },
+      "self_consumption_today": {
+        "name": "Eigen verbruik zon vandaag"
+      },
+      "to_storage_today": {
+        "name": "Zon naar batterij vandaag"
+      },
+      "from_storage_today": {
+        "name": "Batterij naar huis vandaag"
       }
     },
     "binary_sensor": {
