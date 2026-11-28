@@ -9,7 +9,7 @@ import time
 from typing import Any
 from urllib.parse import urlencode
 
-from aiohttp import ClientError, ClientSession
+from aiohttp import ClientError, ClientResponse, ClientSession
 
 from .const import API_BASE_URL, LOGGER, OAUTH2_AUTHORIZE, OAUTH2_SCOPE, OAUTH2_TOKEN
 
@@ -110,16 +110,29 @@ class SolarEdgeV2:
                 self.rate_limit = {
                     k.lower(): v for k, v in resp.headers.items() if k.lower().startswith("x-ratelimit")
                 }
-                if resp.status in (401, 403):
-                    raise SolarEdgeAuthError(f"{path}: {resp.status}")
-                if resp.status == 404:
-                    raise SolarEdgeNotFoundError(path)
-                if resp.status == 429:
-                    raise SolarEdgeRateLimitError(
-                        f"{path}: limit reached ({await resp.text()})"
-                    )
                 if resp.status >= 400:
-                    raise SolarEdgeError(f"{path}: {resp.status} {await resp.text()}")
+                    detail = await _error_detail(resp)
+                    LOGGER.debug("GET %s failed: %s %s", path, resp.status, detail)
+                    message = f"{path}: {resp.status}{detail}"
+                    if resp.status in (401, 403):
+                        raise SolarEdgeAuthError(message)
+                    if resp.status == 404:
+                        raise SolarEdgeNotFoundError(message)
+                    if resp.status == 429:
+                        raise SolarEdgeRateLimitError(message)
+                    raise SolarEdgeError(message)
                 return await resp.json(content_type=None)
         except ClientError as err:
             raise SolarEdgeError(f"{path}: {err}") from err
+
+
+async def _error_detail(resp: ClientResponse) -> str:
+    """SolarEdge's reason and any request/trace id, safe to show and to share."""
+    parts: list[str] = []
+    text = (await resp.text()).strip()
+    if text:
+        parts.append(text[:300])
+    for key, value in resp.headers.items():
+        if any(word in key.lower() for word in ("trace", "request-id", "correlation")):
+            parts.append(f"{key}={value}")
+    return f" ({'; '.join(parts)})" if parts else ""

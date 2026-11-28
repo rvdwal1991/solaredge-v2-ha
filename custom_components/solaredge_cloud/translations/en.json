@@ -24,6 +24,9 @@
       "auth_failed": "Authorization failed: {error}",
       "reauth_successful": "Re-authentication successful.",
       "already_in_progress": "Setup for this site is already in progress."
+    },
+    "error": {
+      "invalid_site_id": "Enter the numeric Site ID, e.g. 1234567."
     }
   },
   "entity": {

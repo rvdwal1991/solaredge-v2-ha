@@ -104,6 +104,7 @@ class SolarEdgeCloudConfigFlow(ConfigFlow, domain=DOMAIN):
         self._verifier = ""
         self._redirect_uri = ""
         self._auth_error = ""
+        self._granted_other_site = ""
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -115,10 +116,13 @@ class SolarEdgeCloudConfigFlow(ConfigFlow, domain=DOMAIN):
                 CONF_CLIENT_ID: user_input[CONF_CLIENT_ID].strip(),
                 CONF_CLIENT_SECRET: user_input[CONF_CLIENT_SECRET].strip(),
             }
-            if self.source != SOURCE_REAUTH:
-                await self.async_set_unique_id(self._data[CONF_SITE_ID])
-                self._abort_if_unique_id_configured()
-            return await self.async_step_auth()
+            if not self._data[CONF_SITE_ID].isdigit():
+                errors[CONF_SITE_ID] = "invalid_site_id"
+            else:
+                if self.source != SOURCE_REAUTH:
+                    await self.async_set_unique_id(self._data[CONF_SITE_ID])
+                    self._abort_if_unique_id_configured()
+                return await self.async_step_auth()
 
         defaults = self._data or {}
         return self.async_show_form(
@@ -151,8 +155,15 @@ class SolarEdgeCloudConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
         self.hass.data.get(DATA_PENDING, {}).pop(self._data[CONF_SITE_ID], None)
-        if (cb_site := user_input.get("site_id")) and cb_site != self._data[CONF_SITE_ID]:
-            LOGGER.warning("Access was granted for site %s instead of %s", cb_site, self._data[CONF_SITE_ID])
+        # SolarEdge says which site the owner approved; that is the one the token is for.
+        if (cb_site := str(user_input.get("site_id") or "").strip()) and cb_site.isdigit():
+            if cb_site != self._data[CONF_SITE_ID]:
+                LOGGER.warning(
+                    "Access was granted for site %s instead of %s; using %s",
+                    cb_site, self._data[CONF_SITE_ID], cb_site,
+                )
+                self._granted_other_site = self._data[CONF_SITE_ID]
+                self._data[CONF_SITE_ID] = cb_site
         if "code" not in user_input:
             self._auth_error = user_input.get("error", "no authorization code received")
             return self.async_external_step_done(next_step_id="auth_failed")
@@ -184,13 +195,26 @@ class SolarEdgeCloudConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_finish(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
+        site_id = self._data[CONF_SITE_ID]
+        if self._granted_other_site:
+            if self.source == SOURCE_REAUTH:
+                self._auth_error = (
+                    f"access was granted for site {site_id}, but this entry is for site "
+                    f"{self._granted_other_site}. Select that site in the SolarEdge window."
+                )
+                return await self.async_step_auth_failed()
+            await self.async_set_unique_id(site_id)
+            self._abort_if_unique_id_configured()
+
         api = SolarEdgeV2(async_get_clientsession(self.hass))
         try:
-            details = await api.get(
-                self._data[CONF_TOKEN]["access_token"], f"/sites/{self._data[CONF_SITE_ID]}"
-            )
+            details = await api.get(self._data[CONF_TOKEN]["access_token"], f"/sites/{site_id}")
         except SolarEdgeError as err:
-            self._auth_error = str(err)
+            LOGGER.error("Reading site %s after authorization failed: %s", site_id, err)
+            self._auth_error = (
+                f"{err}. SolarEdge granted access, but refused to return site {site_id}. "
+                "Check that this is the Site ID of the site you approved"
+            )
             return await self.async_step_auth_failed()
         site = details.get("site", details) if isinstance(details, dict) else {}
         title = site.get("name") or f"SolarEdge {self._data[CONF_SITE_ID]}"

@@ -24,6 +24,9 @@
       "auth_failed": "Koppelen mislukt: {error}",
       "reauth_successful": "Opnieuw gekoppeld.",
       "already_in_progress": "De koppeling voor deze site loopt al."
+    },
+    "error": {
+      "invalid_site_id": "Vul het Site ID in als getal, bijvoorbeeld 1234567."
     }
   },
   "entity": {
